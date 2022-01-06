@@ -1018,25 +1018,26 @@ router.get('/nsfw/yuri', async (req, res, next) => {
 })
 ///NSFW END
 router.get('/tiktod', async (req, res, next) => {
-    var apikeyInput = req.query.apikey,
-            url = req.query.url
-            
-	if(!apikeyInput) return res.json(loghandler.notparam)
-	if(apikeyInput != 'wanzbotz') return res.json(loghandler.invalidKey)
-    if (!url) return res.json({ status : false, creator : `${creator}`, message : "masukan parameter url"})
+var apikeyInput = req.query.apikey,
+url = req.query.url
 
-       fetch(encodeURI(`https://api.neoxr.eu.org/api/tiktok?url=${url}&apikey=yourkey`))
-        .then(response => response.json())
-        .then(data => {
-        var data = data;
+
+	if(!apikeyInput) return res.json(loghandler.notparam)
+	if(apikeyInput != 'WanzBotz') return res.json(loghandler.invalidKey)
+         if (!url) return res.json({ status : false, creator : `${creator}`, message : "masukan parameter url"})
+
+     TikTokScraper.getVideoMeta(url, options)
+         .then(vid => {
+             console.log(vid)
              res.json({
-             	author: 'Wanz-Botz',
-                 data
+                 status: true,
+                 creator: `${creator}`,
+                 videoNoWm: vid
              })
          })
          .catch(e => {
-         	res.json(loghandler.error)
-})
+             res.json(loghandler.invalidlink)
+         })
 })
 
 router.get('/tiktod/stalk', async (req, res, next) => {
