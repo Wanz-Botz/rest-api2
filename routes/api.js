@@ -22,6 +22,7 @@ var request = require('request');
 var TikTokScraper = require('tiktok-scraper');
 var router  = express.Router();
 
+var { tiktok } = require('../lib/tiktok')
 var { color, bgcolor } = require(__path + '/lib/color.js');
 var { fetchJson } = require(__path + '/lib/fetcher.js')
 var options = require(__path + '/lib/options.js');
@@ -1017,28 +1018,21 @@ router.get('/nsfw/yuri', async (req, res, next) => {
 })
 })
 ///NSFW END
-router.get('/tiktod', async (req, res, next) => {
+router.get('/tiktok', async(req, res) => {
 var apikeyInput = req.query.apikey,
 url = req.query.url
-
-
-	if(!apikeyInput) return res.json(loghandler.notparam)
-	if(apikeyInput != 'WanzBotz') return res.json(loghandler.invalidKey)
-         if (!url) return res.json({ status : false, creator : `${creator}`, message : "masukan parameter url"})
-
-     TikTokScraper.getVideoMeta(url, options)
-         .then(vid => {
-             console.log(vid)
-             res.json({
-                 status: true,
-                 creator: `${creator}`,
-                 videoNoWm: vid
-             })
-         })
-         .catch(e => {
-             res.json(loghandler.invalidlink)
-         })
-})
+	      let result = await tiktok(url)
+	      try {
+		  res.json({
+			  status: 200,
+			  creator: `${creator}`,
+              result
+          })
+	   } catch(err) {
+		    console.log(err)
+		    res.json(loghandler.error)
+	     }
+    })
 
 router.get('/tiktod/stalk', async (req, res, next) => {
     var apikeyInput = req.query.apikey,
