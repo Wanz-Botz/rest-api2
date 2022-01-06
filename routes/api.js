@@ -1025,13 +1025,13 @@ router.get('/tiktod', async (req, res, next) => {
 	if(apikeyInput != 'wanzbotz') return res.json(loghandler.invalidKey)
     if (!url) return res.json({ status : false, creator : `${creator}`, message : "masukan parameter url"})
 
-       fetch(encodeURI(`https://api-wanz.herokuapp.com/docs/download/tiktok?url=${url}&apikey=WanzBotz`))
+       fetch(encodeURI(`https://api.neoxr.eu.org/api/tiktok?url=${url}&apikey=yourkey`))
         .then(response => response.json())
         .then(data => {
-        var result = data;
+        var data = data;
              res.json({
              	author: 'Wanz-Botz',
-                 result
+                 data
              })
          })
          .catch(e => {
