@@ -22,7 +22,7 @@ var request = require('request');
 var TikTokScraper = require('tiktok-scraper');
 var router  = express.Router();
 
-var { tiktok } = require('../lib/tiktok')
+var { tiktok } = require('../lib/tiktok.js')
 var { color, bgcolor } = require(__path + '/lib/color.js');
 var { fetchJson } = require(__path + '/lib/fetcher.js')
 var options = require(__path + '/lib/options.js');
